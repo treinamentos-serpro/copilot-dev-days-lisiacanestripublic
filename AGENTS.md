@@ -30,6 +30,19 @@ cd socops && ./mvnw spring-boot:run  # http://localhost:8080
 - The deploy workflow publishes `docs/` to GitHub Pages, not the Spring Boot server.
 - Use the [TDD](.github/agents/tdd.agent.md), [Pixel Jam](.github/agents/pixel-jam.agent.md), [UI Review](.github/agents/ui-review.agent.md), and [Quiz Master](.github/agents/quiz-master.agent.md) workflows when applicable.
 
+## Design guide
+
+Use the app as a bold social mixer experience: the interface should feel high-energy, graphic, and unmistakably designed rather than generic or template-like.
+
+- Visual direction: Bold Constructivist. Strong geometry, rigid compositions, oversized typography, layered shadows, and printed-poster energy.
+- Palette: paper-like warm neutrals with punchy accent blocks in red, yellow, blue, cyan, and green. Keep contrast high and shapes crisp.
+- Typography: oversized, heavy, expressive headlines with strong industrial rhythm. Use condensed or display-like fonts to emphasize the poster aesthetic.
+- Layout: the lobby should feel like an event poster or campaign board; the board should remain clear, playable, and readable while showing a graphic identity.
+- Interaction: buttons and tiles should feel tactile and structural. Use visible borders, offset shadows, and deliberate motion instead of glassy softness.
+- Accessibility: preserve high contrast and clear text legibility even in the more graphic treatment. The board must remain easy to scan and the game state must be obvious.
+- Rule safety: do not sacrifice the 5x5 board contract, free center tile, or persistence model for style. Visual language should enhance gameplay, not hide it.
+- Implementation: keep styling layered in `game.html` and `app.css`, and avoid introducing frontend frameworks or new dependencies for visual changes.
+
 ## Further reading
 
 [README](README.md) | [README PT-BR](README.pt_BR.md) | [Workshop guide](workshop/GUIDE.md) | [Workshop PT-BR](workshop/pt_BR/GUIDE.md) | [Setup](workshop/01-setup.md) | [Design](workshop/02-design.md) | [Quiz](workshop/03-quiz-master.md) | [Multi-agent](workshop/04-multi-agent.md)
