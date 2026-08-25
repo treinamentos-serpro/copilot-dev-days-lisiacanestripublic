@@ -432,6 +432,76 @@ button:disabled { cursor: default; }
     font-size: 0.75rem;
 }
 
+/* ── lobby bingo preview grid ──────────────────────────────────── */
+@keyframes lobby-cell-in {
+    from { opacity: 0; transform: scale(0.6); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes lobby-cell-pulse {
+    0%, 100% { box-shadow: 3px 3px 0 var(--ink); }
+    50%       { box-shadow: 5px 5px 0 var(--ink); }
+}
+
+.lobby-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+    margin-bottom: 16px;
+    padding: 12px;
+    background: linear-gradient(135deg, #fff8ee, #fffdf8);
+    border: 4px solid var(--ink);
+    box-shadow: 8px 8px 0 var(--ink);
+}
+
+.lobby-cell {
+    aspect-ratio: 1 / 1;
+    border: 3px solid var(--ink);
+    animation:
+        lobby-cell-in 0.28s ease both,
+        lobby-cell-pulse 2.4s ease-in-out infinite;
+    animation-delay: calc(var(--i) * 0.04s), calc(var(--i) * 0.18s + 0.5s);
+}
+
+.lobby-cell--idle   { background: #fff; }
+.lobby-cell--marked { background: var(--cyan); }
+.lobby-cell--free   { background: var(--green); }
+
+/* win condition compact note */
+.constructivist-win-line {
+    margin: 0 0 4px;
+    padding: 8px 10px;
+    border: 3px solid var(--ink);
+    background: var(--yellow);
+    box-shadow: 4px 4px 0 var(--ink);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    line-height: 1.4;
+}
+
+/* lobby stagger-in for stage children */
+.constructivist-stage > * {
+    animation: lobby-cell-in 0.35s ease both;
+}
+.constructivist-stage > *:nth-child(1) { animation-delay: 0s; }
+.constructivist-stage > *:nth-child(2) { animation-delay: 0.06s; }
+.constructivist-stage > *:nth-child(3) { animation-delay: 0.12s; }
+.constructivist-stage > *:nth-child(4) { animation-delay: 0.18s; }
+.constructivist-stage > *:nth-child(5) { animation-delay: 0.24s; }
+.constructivist-stage > *:nth-child(6) { animation-delay: 0.30s; }
+
+/* ── reduced-motion: disable all animation ──────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+    .lobby-cell,
+    .constructivist-stage > * {
+        animation: none !important;
+    }
+    .constructivist-button {
+        transition: none !important;
+    }
+}
+
 @media (max-width: 480px) {
     .constructivist-screen {
         padding: 16px;
