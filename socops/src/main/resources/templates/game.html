@@ -25,20 +25,42 @@
 
         <p class="constructivist-subtitle">Find a match. Make a connection. Complete a line.</p>
 
-        <div class="constructivist-meta-strip">
-            <span>5×5</span>
-            <span>ICEBREAKERS</span>
-            <span>FIRST TO BINGO</span>
+        <!-- non-interactive 5×5 bingo preview -->
+        <div class="lobby-preview-grid" aria-hidden="true">
+            <div class="lobby-cell lobby-cell--idle" style="--i:0"></div>
+            <div class="lobby-cell lobby-cell--idle" style="--i:1"></div>
+            <div class="lobby-cell lobby-cell--marked" style="--i:2"></div>
+            <div class="lobby-cell lobby-cell--idle" style="--i:3"></div>
+            <div class="lobby-cell lobby-cell--idle" style="--i:4"></div>
+
+            <div class="lobby-cell lobby-cell--idle" style="--i:5"></div>
+            <div class="lobby-cell lobby-cell--marked" style="--i:6"></div>
+            <div class="lobby-cell lobby-cell--idle" style="--i:7"></div>
+            <div class="lobby-cell lobby-cell--idle" style="--i:8"></div>
+            <div class="lobby-cell lobby-cell--marked" style="--i:9"></div>
+
+            <div class="lobby-cell lobby-cell--idle" style="--i:10"></div>
+            <div class="lobby-cell lobby-cell--idle" style="--i:11"></div>
+            <div class="lobby-cell lobby-cell--free" style="--i:12"></div>
+            <div class="lobby-cell lobby-cell--idle" style="--i:13"></div>
+            <div class="lobby-cell lobby-cell--idle" style="--i:14"></div>
+
+            <div class="lobby-cell lobby-cell--marked" style="--i:15"></div>
+            <div class="lobby-cell lobby-cell--idle" style="--i:16"></div>
+            <div class="lobby-cell lobby-cell--idle" style="--i:17"></div>
+            <div class="lobby-cell lobby-cell--marked" style="--i:18"></div>
+            <div class="lobby-cell lobby-cell--idle" style="--i:19"></div>
+
+            <div class="lobby-cell lobby-cell--idle" style="--i:20"></div>
+            <div class="lobby-cell lobby-cell--idle" style="--i:21"></div>
+            <div class="lobby-cell lobby-cell--marked" style="--i:22"></div>
+            <div class="lobby-cell lobby-cell--idle" style="--i:23"></div>
+            <div class="lobby-cell lobby-cell--idle" style="--i:24"></div>
         </div>
 
-        <div class="constructivist-card">
-            <h2>HOW TO PLAY</h2>
-            <ol>
-                <li>Meet someone who matches a prompt.</li>
-                <li>Tap the square and lock in the match.</li>
-                <li>Build a line of five to win the room.</li>
-            </ol>
-        </div>
+        <p class="constructivist-win-line">
+            <strong>WIN:</strong> mark five in a row — across, down, or diagonal.
+        </p>
 
         <button onclick="launchGame()"
                 class="constructivist-button accent-active transition-colors">
