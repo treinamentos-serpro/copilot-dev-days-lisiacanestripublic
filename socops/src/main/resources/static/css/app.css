@@ -448,3 +448,308 @@ button:disabled { cursor: default; }
         font-size: 0.5rem;
     }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   EVENT-PASS LOBBY  (variation 2)
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── lobby screen backdrop ─────────────────────────────────── */
+.ep-lobby {
+    background:
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 38px,
+            rgba(15, 17, 24, 0.04) 38px,
+            rgba(15, 17, 24, 0.04) 39px
+        ),
+        linear-gradient(160deg, #f4e9d7 0%, #ede0c5 100%);
+    align-items: center;
+    justify-content: center;
+    padding: 28px 20px;
+}
+
+/* ── pass card ─────────────────────────────────────────────── */
+.ep-pass {
+    position: relative;
+    width: min(100%, 520px);
+    background: #fffaf2;
+    border: 5px solid var(--ink);
+    box-shadow: 10px 10px 0 var(--ink);
+    overflow: hidden;
+}
+
+/* red stripe on left edge — ticket identity accent */
+.ep-pass::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 14px;
+    height: 100%;
+    background: var(--red);
+    border-right: 4px solid var(--ink);
+}
+
+/* ── header band ───────────────────────────────────────────── */
+.ep-pass-header {
+    padding: 22px 22px 18px 36px;
+    background: var(--ink);
+}
+
+.ep-event-type {
+    display: inline-block;
+    padding: 5px 10px;
+    margin-bottom: 12px;
+    font-size: 0.62rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    background: var(--yellow);
+    color: var(--ink);
+    border: 3px solid var(--ink);
+    box-shadow: 3px 3px 0 rgba(255, 255, 255, 0.3);
+    animation: ep-badge-in 0.45s cubic-bezier(.22,1,.36,1) both;
+}
+
+.ep-title-block {
+    display: flex;
+    align-items: baseline;
+    gap: 0.08em;
+    line-height: 0.82;
+    margin-bottom: 10px;
+    animation: ep-title-in 0.5s cubic-bezier(.22,1,.36,1) 0.1s both;
+}
+
+.ep-title-soc,
+.ep-title-ops {
+    font-size: clamp(4rem, 14vw, 7.2rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.06em;
+}
+
+.ep-title-soc {
+    color: var(--red);
+    text-shadow: 5px 5px 0 rgba(0,0,0,0.55);
+}
+
+.ep-title-ops {
+    color: #fffaf2;
+    text-shadow: 5px 5px 0 rgba(239,59,45,0.7);
+}
+
+.ep-tagline {
+    margin: 0;
+    font-size: 0.74rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255, 250, 242, 0.72);
+    animation: ep-fade-up 0.45s ease 0.2s both;
+}
+
+/* ── perforation strip ─────────────────────────────────────── */
+.ep-perf {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 18px 0 36px;
+    background: var(--ink);
+    border-top: 3px dashed rgba(255,255,255,0.22);
+    border-bottom: 3px dashed rgba(255,255,255,0.22);
+    height: 28px;
+}
+
+.ep-perf-line {
+    flex: 1;
+    height: 2px;
+    border-top: 2px dashed rgba(255, 250, 242, 0.4);
+}
+
+.ep-perf-scissors {
+    font-size: 0.9rem;
+    color: rgba(255,250,242,0.55);
+    transform: scaleX(-1);
+    user-select: none;
+}
+
+/* ── pass body ─────────────────────────────────────────────── */
+.ep-pass-body {
+    padding: 22px 22px 18px 36px;
+}
+
+.ep-steps-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 3px solid var(--ink);
+}
+
+.ep-steps {
+    list-style: none;
+    margin: 0 0 22px;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+}
+
+.ep-steps li {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+}
+
+.ep-step-num {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    font-size: 0.75rem;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    background: var(--red);
+    color: #fff;
+    border: 3px solid var(--ink);
+    box-shadow: 3px 3px 0 var(--ink);
+}
+
+.ep-step-text {
+    padding-top: 6px;
+    font-size: 0.88rem;
+    line-height: 1.35;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink);
+}
+
+/* ── CTA button ────────────────────────────────────────────── */
+.ep-start-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 18px 22px;
+    font-size: 1.1rem;
+    font-weight: 900;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--red);
+    border: 4px solid var(--ink);
+    box-shadow: 8px 8px 0 var(--ink);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    cursor: pointer;
+    animation: ep-fade-up 0.5s ease 0.3s both;
+}
+
+.ep-start-btn:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 11px 11px 0 var(--ink);
+}
+
+.ep-start-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 5px 5px 0 var(--ink);
+}
+
+.ep-start-btn:focus-visible {
+    outline: 4px solid var(--yellow);
+    outline-offset: 3px;
+}
+
+/* ── pass footer ───────────────────────────────────────────── */
+.ep-pass-footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 14px 22px 18px 36px;
+    border-top: 4px solid var(--ink);
+    background: var(--panel-strong);
+}
+
+.ep-badge {
+    display: inline-block;
+    padding: 5px 10px;
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 900;
+    border: 3px solid var(--ink);
+    box-shadow: 3px 3px 0 var(--ink);
+}
+
+.ep-badge-red    { background: var(--red);    color: #fff; }
+.ep-badge-blue   { background: var(--blue);   color: #fff; }
+.ep-badge-yellow { background: var(--yellow); color: var(--ink); }
+.ep-badge-ink    { background: var(--ink);    color: var(--paper); }
+
+/* ── entrance animations ───────────────────────────────────── */
+@keyframes ep-badge-in {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ep-title-in {
+    from { opacity: 0; transform: translateX(-14px) skewX(-8deg); }
+    to   { opacity: 1; transform: translateX(0) skewX(0deg); }
+}
+
+@keyframes ep-fade-up {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── reduced-motion ────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+    .ep-event-type,
+    .ep-title-block,
+    .ep-tagline,
+    .ep-start-btn {
+        animation: none;
+    }
+
+    .ep-start-btn,
+    .ep-start-btn:hover,
+    .ep-start-btn:active {
+        transform: none !important;
+        box-shadow: 8px 8px 0 var(--ink) !important;
+        transition: none;
+    }
+}
+
+/* ── mobile adjustments ────────────────────────────────────── */
+@media (max-width: 480px) {
+    .ep-lobby {
+        padding: 16px 12px;
+    }
+
+    .ep-pass-header,
+    .ep-pass-body,
+    .ep-pass-footer {
+        padding-left: 28px;
+    }
+
+    .ep-title-soc,
+    .ep-title-ops {
+        font-size: clamp(3.4rem, 18vw, 5rem);
+    }
+
+    .ep-step-num {
+        width: 30px;
+        height: 30px;
+        font-size: 0.68rem;
+    }
+
+    .ep-step-text {
+        font-size: 0.8rem;
+    }
+
+    .ep-start-btn {
+        font-size: 1rem;
+        padding: 15px 18px;
+    }
+}
