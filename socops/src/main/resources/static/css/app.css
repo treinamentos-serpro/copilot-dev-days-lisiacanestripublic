@@ -500,9 +500,7 @@ button:disabled { cursor: default; }
 }
 
 /* ── keyboard focus states ───────────────────────────────────── */
-button:focus-visible,
-.constructivist-button:focus-visible,
-.constructivist-back:focus-visible {
+button:focus-visible {
     outline: 4px solid var(--blue);
     outline-offset: 3px;
 }
