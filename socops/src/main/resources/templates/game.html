@@ -32,18 +32,20 @@
         </div>
 
         <div class="constructivist-card">
-            <h2>HOW TO PLAY</h2>
-            <ol>
-                <li>Meet someone who matches a prompt.</li>
-                <li>Tap the square and lock in the match.</li>
-                <li>Build a line of five to win the room.</li>
-            </ol>
+            <h2>CHOOSE YOUR MODE</h2>
+            <div class="constructivist-mode-list">
+                <button onclick="launchGame('BINGO')"
+                        class="constructivist-mode-button constructivist-mode-button-bingo accent-active">
+                    <span class="constructivist-mode-label">BINGO</span>
+                    <span class="constructivist-mode-description">Build a line of five.</span>
+                </button>
+                <button onclick="launchGame('SCAVENGER')"
+                        class="constructivist-mode-button constructivist-mode-button-scavenger accent-active">
+                    <span class="constructivist-mode-label">SCAVENGER HUNT</span>
+                    <span class="constructivist-mode-description">Check off every match.</span>
+                </button>
+            </div>
         </div>
-
-        <button onclick="launchGame()"
-                class="constructivist-button accent-active transition-colors">
-            START THE MIXER
-        </button>
     </div>
 </div>
 
@@ -56,7 +58,21 @@
         <div class="constructivist-live">LIVE</div>
     </header>
 
-    <p class="constructivist-hint">Tap a square when you find someone who matches it.</p>
+    <p id="gameHint" class="constructivist-hint">Tap a square when you find someone who matches it.</p>
+
+    <div id="scavengerProgress" class="scavenger-progress" style="display:none">
+        <div class="scavenger-progress-heading">
+            <span>HUNT PROGRESS</span>
+            <strong id="scavengerProgressCount">0 / 24</strong>
+        </div>
+        <div class="scavenger-progress-track" role="progressbar"
+             aria-label="Scavenger Hunt progress" aria-valuemin="0" aria-valuemax="24" aria-valuenow="0">
+            <div id="scavengerProgressFill" class="scavenger-progress-fill"></div>
+        </div>
+        <p id="scavengerComplete" class="scavenger-complete" aria-live="polite" style="display:none">
+            HUNT COMPLETE. EVERY MATCH FOUND.
+        </p>
+    </div>
 
     <div id="bingoBanner" class="constructivist-banner" style="display:none">
         BINGO! LINE LOCKED.
@@ -66,6 +82,9 @@
         <div id="gridContainer"
              class="grid grid-cols-5 gap-1 w-full max-w-md mx-auto aspect-square constructivist-grid">
             <!-- tiles injected by JS -->
+        </div>
+        <div id="listContainer" class="scavenger-list" style="display:none">
+            <!-- prompts injected by JS -->
         </div>
     </div>
 </div>
@@ -95,21 +114,37 @@
     var streakFound = null;        /* WinningStreak or null       */
     var modalShown  = false;
     var currentPhase = "LOBBY";    /* LOBBY | ACTIVE | VICTORY    */
+    var currentMode = "BINGO";      /* BINGO | SCAVENGER          */
 
     /* ── DOM refs ─────────────────────────────────────────────── */
     var lobbyDiv   = document.getElementById("lobbyView");
     var activeDiv  = document.getElementById("activeView");
     var gridDiv    = document.getElementById("gridContainer");
+    var listDiv    = document.getElementById("listContainer");
+    var hintDiv    = document.getElementById("gameHint");
     var bannerDiv  = document.getElementById("bingoBanner");
     var overlayDiv = document.getElementById("victoryOverlay");
+    var progressDiv = document.getElementById("scavengerProgress");
+    var progressCount = document.getElementById("scavengerProgressCount");
+    var progressTrack = document.querySelector(".scavenger-progress-track");
+    var progressFill = document.getElementById("scavengerProgressFill");
+    var completeDiv = document.getElementById("scavengerComplete");
 
     /* ── phase switching ──────────────────────────────────────── */
     function showPhase(phase) {
         currentPhase = phase;
         lobbyDiv.style.display   = (phase === "LOBBY") ? "" : "none";
         activeDiv.style.display  = (phase !== "LOBBY") ? "" : "none";
-        bannerDiv.style.display  = (streakFound)       ? "" : "none";
-        overlayDiv.style.display = (modalShown)        ? "" : "none";
+        var isBingo = currentMode === "BINGO";
+        gridDiv.style.display = isBingo ? "" : "none";
+        listDiv.style.display = isBingo ? "none" : "";
+        progressDiv.style.display = isBingo ? "none" : "";
+        hintDiv.textContent = isBingo
+            ? "Tap a square when you find someone who matches it."
+            : "Check off each prompt when you find someone who matches it.";
+        bannerDiv.style.display  = (isBingo && streakFound) ? "" : "none";
+        overlayDiv.style.display = (isBingo && modalShown)  ? "" : "none";
+        updateScavengerProgress();
     }
 
     /* ── board rendering ──────────────────────────────────────── */
@@ -161,11 +196,54 @@
         }
     }
 
+    function paintList() {
+        listDiv.innerHTML = "";
+
+        for (var t = 0; t < liveTiles.length; t++) {
+            var tile = liveTiles[t];
+            if (tile.freeCell) { continue; }
+
+            var item = document.createElement("label");
+            item.className = "scavenger-item" + (tile.selected ? " scavenger-item-selected" : "");
+
+            var checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.checked = tile.selected;
+            checkbox.setAttribute("aria-label", tile.prompt);
+            checkbox.addEventListener("change", (function (cid) {
+                return function () { onTileTapped(cid); };
+            })(tile.id));
+
+            var prompt = document.createElement("span");
+            prompt.className = "scavenger-item-prompt";
+            prompt.textContent = tile.prompt;
+
+            item.appendChild(checkbox);
+            item.appendChild(prompt);
+            listDiv.appendChild(item);
+        }
+    }
+
+    function updateScavengerProgress() {
+        if (currentMode !== "SCAVENGER") { return; }
+
+        var completed = 0;
+        for (var i = 0; i < liveTiles.length; i++) {
+            if (!liveTiles[i].freeCell && liveTiles[i].selected) { completed++; }
+        }
+
+        progressCount.textContent = completed + " / 24";
+        progressFill.style.width = ((completed / 24) * 100) + "%";
+        progressTrack.setAttribute("aria-valuenow", String(completed));
+        completeDiv.style.display = completed === 24 ? "" : "none";
+        progressDiv.classList.toggle("scavenger-progress-complete", completed === 24);
+    }
+
     /* ── tile tap logic ───────────────────────────────────────── */
     function onTileTapped(cellId) {
         liveTiles = flipTile(liveTiles, cellId);
 
-        if (!streakFound) {
+        if (currentMode === "BINGO" && !streakFound) {
             var detected = scanForStreak(liveTiles);
             if (detected) {
                 streakFound = detected;
@@ -175,8 +253,10 @@
         }
         persistSnapshot();
         paintGrid();
-        bannerDiv.style.display  = streakFound ? "" : "none";
-        overlayDiv.style.display = modalShown  ? "" : "none";
+        paintList();
+        bannerDiv.style.display  = (currentMode === "BINGO" && streakFound) ? "" : "none";
+        overlayDiv.style.display = (currentMode === "BINGO" && modalShown)  ? "" : "none";
+        updateScavengerProgress();
     }
 
     /* ── board manipulation (mirrors BoardAssembler.java) ─────── */
@@ -244,6 +324,7 @@
         try {
             var blob = JSON.stringify({
                 phase: currentPhase,
+                mode: currentMode,
                 tiles: liveTiles,
                 streak: streakFound,
                 modal: modalShown
@@ -261,22 +342,25 @@
             liveTiles   = snap.tiles;
             streakFound = snap.streak || null;
             modalShown  = !!snap.modal;
+            currentMode = snap.mode === "SCAVENGER" ? "SCAVENGER" : "BINGO";
             currentPhase = snap.phase || "ACTIVE";
             return currentPhase !== "LOBBY";
         } catch (_) { return false; }
     }
 
     /* ── public API (called from onclick attrs) ───────────────── */
-    window.launchGame = function () {
+    window.launchGame = function (mode) {
         fetch("/api/bingo/fresh-board")
             .then(function (resp) { return resp.json(); })
             .then(function (cells) {
                 liveTiles   = cells;
                 streakFound = null;
                 modalShown  = false;
+                currentMode = mode === "SCAVENGER" ? "SCAVENGER" : "BINGO";
                 currentPhase = "ACTIVE";
                 persistSnapshot();
                 paintGrid();
+                paintList();
                 showPhase("ACTIVE");
             });
     };
@@ -285,6 +369,7 @@
         liveTiles   = [];
         streakFound = null;
         modalShown  = false;
+        currentMode = "BINGO";
         currentPhase = "LOBBY";
         persistSnapshot();
         showPhase("LOBBY");
@@ -299,6 +384,7 @@
     /* ── boot ─────────────────────────────────────────────────── */
     if (restoreSnapshot()) {
         paintGrid();
+        paintList();
         showPhase(currentPhase);
     } else {
         showPhase("LOBBY");
