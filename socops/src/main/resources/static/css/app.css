@@ -432,12 +432,97 @@ button:disabled { cursor: default; }
     font-size: 0.75rem;
 }
 
+/* ── entrance animations ─────────────────────────────────────── */
+@keyframes lobby-rise {
+    from { opacity: 0; transform: rotate(-1.2deg) translateY(28px); }
+    to   { opacity: 1; transform: rotate(-1.2deg) translateY(0);    }
+}
+
+@keyframes kicker-pop {
+    from { opacity: 0; transform: scale(0.85); }
+    to   { opacity: 1; transform: scale(1);    }
+}
+
+@keyframes title-slide {
+    from { opacity: 0; transform: skewX(-8deg) translateX(-18px); }
+    to   { opacity: 1; transform: skewX(-8deg) translateX(0);      }
+}
+
+@keyframes fade-up {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0);    }
+}
+
+.constructivist-stage {
+    animation: lobby-rise 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.constructivist-kicker {
+    animation: kicker-pop 0.35s ease-out 0.25s both;
+}
+
+.constructivist-title {
+    animation: title-slide 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.35s both;
+}
+
+.constructivist-subtitle {
+    animation: fade-up 0.4s ease-out 0.5s both;
+}
+
+.constructivist-meta-strip {
+    animation: fade-up 0.4s ease-out 0.6s both;
+}
+
+.constructivist-card {
+    animation: fade-up 0.4s ease-out 0.7s both;
+}
+
+.constructivist-button {
+    animation: fade-up 0.4s ease-out 0.82s both;
+}
+
+/* disable animations when user prefers reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .constructivist-stage,
+    .constructivist-kicker,
+    .constructivist-title,
+    .constructivist-subtitle,
+    .constructivist-meta-strip,
+    .constructivist-card,
+    .constructivist-button {
+        animation: none;
+    }
+
+    .constructivist-button,
+    .tile {
+        transition: none;
+    }
+}
+
+/* ── keyboard focus states ───────────────────────────────────── */
+button:focus-visible {
+    outline: 4px solid var(--blue);
+    outline-offset: 3px;
+}
+
+.tile:focus-visible {
+    outline: 4px solid var(--red);
+    outline-offset: 2px;
+    z-index: 2;
+}
+
 @media (max-width: 480px) {
     .constructivist-screen {
         padding: 16px;
     }
 
-    .constructivist-stage,
+    .constructivist-stage {
+        transform: rotate(0deg);
+        box-shadow: 8px 8px 0 var(--shadow);
+        animation: none;
+        width: 100%;
+    }
+
     .constructivist-topbar,
     .constructivist-board-wrap {
         width: 100%;

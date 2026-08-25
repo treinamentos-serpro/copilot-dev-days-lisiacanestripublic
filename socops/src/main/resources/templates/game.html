@@ -121,34 +121,29 @@
             var tile = liveTiles[t];
             var btn = document.createElement("button");
 
-            var base = "relative flex items-center justify-center p-1 text-center " +
-                       "border border-gray-300 rounded transition-all duration-150 " +
-                       "select-none min-h-[60px] text-xs leading-tight";
-
-            var state;
-            if (tile.selected) {
-                state = winIds[tile.id]
-                    ? "bg-amber-200 border-amber-400 text-amber-900"
-                    : "bg-marked border-marked-border text-green-800";
+            var stateClass;
+            if (tile.freeCell) {
+                stateClass = "tile--free";
+            } else if (tile.selected) {
+                stateClass = winIds[tile.id] ? "tile--winning" : "tile--selected";
             } else {
-                state = "bg-white text-gray-700 tile-active";
+                stateClass = "tile--idle tile-active";
             }
 
-            var extra = tile.freeCell ? " font-bold text-sm" : "";
-            btn.className = base + " " + state + extra;
+            btn.className = "tile " + stateClass;
 
             if (tile.freeCell) { btn.disabled = true; }
             btn.setAttribute("aria-pressed", String(tile.selected));
             btn.setAttribute("aria-label", tile.freeCell ? "Free space" : tile.prompt);
 
             var labelSpan = document.createElement("span");
-            labelSpan.className = "wrap-break-word hyphens-auto";
+            labelSpan.className = "tile-copy";
             labelSpan.textContent = tile.prompt;
             btn.appendChild(labelSpan);
 
             if (tile.selected && !tile.freeCell) {
                 var tick = document.createElement("span");
-                tick.className = "absolute top-0.5 right-0.5 text-green-600 text-xs";
+                tick.className = "tile-check";
                 tick.textContent = "\u2713";
                 btn.appendChild(tick);
             }
