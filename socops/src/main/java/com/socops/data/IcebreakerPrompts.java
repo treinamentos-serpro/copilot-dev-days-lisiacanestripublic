@@ -9,7 +9,7 @@ import java.util.List;
  */
 public final class IcebreakerPrompts {
 
-    public static final String FREE_CELL_LABEL = "FREE SPACE";
+    public static final String FREE_CELL_LABEL = "ESPAÇO LIVRE";
 
     public static final List<String> ALL_PROMPTS = List.of(
             "já foi a uma convenção de fandom",
