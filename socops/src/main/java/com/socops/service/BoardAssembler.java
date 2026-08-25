@@ -1,9 +1,5 @@
 package com.socops.service;
 
-import com.socops.data.IcebreakerPrompts;
-import com.socops.model.BingoCell;
-import com.socops.model.WinningStreak;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -11,6 +7,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.IntStream;
+
+import com.socops.data.IcebreakerPrompts;
+import com.socops.model.BingoCell;
+import com.socops.model.WinningStreak;
 
 /**
  * Pure-logic helper that builds boards, flips tiles, and spots victories.
@@ -53,7 +53,10 @@ public final class BoardAssembler {
     /*  Cell toggling                                                      */
     /* ------------------------------------------------------------------ */
 
-    /** Return a copy of the board with the given cell's selection toggled (free cells are immune). */
+    /**
+     * Return a copy of the board with the given cell's selection toggled.
+     * Free cells are immune.
+     */
     public static List<BingoCell> flipCell(List<BingoCell> board, int cellId) {
         List<BingoCell> updatedBoard = new ArrayList<>(board.size());
         for (BingoCell tile : board) {
